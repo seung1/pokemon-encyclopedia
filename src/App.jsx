@@ -2,17 +2,17 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import axios from "axios";
+import PokeCard from "./components/PokeCard";
 
 function App() {
   const [pokemons, setPokemons] = useState([]);
 
-  const url = "https://pokeapi.co/api/v2/pokemon/?limit=1008?offset=0";
+  const url = "https://pokeapi.co/api/v2/pokemon/?limit=108?offset=0";
 
   const fetchPokeData = async () => {
     try {
       const response = await axios.get(url);
       setPokemons(response.data.results);
-      console.log(response.data.results);
     } catch (error) {
       console.error(error);
     }
@@ -31,7 +31,7 @@ function App() {
         <div className="flex flex-row flex-wrap gap-[16px] items-center justify-center px-2 max-w-4xl">
           {pokemons.length > 0 ? (
             pokemons.map(({ url, name }, index) => (
-              <div key={index}>{name}</div>
+              <PokeCard key={index} url={url} name={name} />
             ))
           ) : (
             <h2 className="font-medium text-lg text-slate-900 mb-1">
