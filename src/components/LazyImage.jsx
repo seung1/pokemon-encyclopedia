@@ -4,6 +4,7 @@ const LazyImage = ({ url, alt }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [opacity, setOpacity] = useState("opacity-0");
 
+  // 처음 투명도 0으로 시작했다가 이미지를 가져오면 그때 보여주기
   useEffect(() => {
     isLoading ? setOpacity("opacity-0") : setOpacity("opacity-100");
   }, [isLoading]);

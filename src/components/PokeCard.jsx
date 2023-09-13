@@ -6,6 +6,7 @@ import LazyImage from "./LazyImage";
 const PokeCard = ({ url, name }) => {
   const [pokemon, setPokemon] = useState();
 
+  // 세부 정보 가져오기
   const fetchPokeDetailData = async () => {
     try {
       const response = await axios(url);
@@ -16,6 +17,7 @@ const PokeCard = ({ url, name }) => {
     }
   };
 
+  // 주어진 정보중에서 필요한것만 가공
   const formatPokemonData = (unformatData) => {
     const { id, types, name } = unformatData;
     const PokeData = { id, name, type: types[0].type.name };

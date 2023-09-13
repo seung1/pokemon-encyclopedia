@@ -9,6 +9,7 @@ function App() {
 
   const url = "https://pokeapi.co/api/v2/pokemon/?limit=108?offset=0";
 
+  // 포켓몬 정보 가져오기 => name, url
   const fetchPokeData = async () => {
     try {
       const response = await axios.get(url);
