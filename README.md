@@ -1,8 +1,18 @@
-# React + Vite
+# 포켓몬 도감 프로젝트
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- 새로운 기술 공부를 위한 프로젝트입니다.
 
-Currently, two official plugins are available:
+### 새로 접한 기술
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- vite
+- tailwindcss
+- gh-pages
+- firebase login
+
+### 사용한 api
+
+- https://pokeapi.co/
+
+### 프로젝트 사이트
+
+- https://seung1.github.io/pokemon-encyclopedia/
