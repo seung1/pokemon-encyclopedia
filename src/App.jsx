@@ -3,6 +3,7 @@ import axios from "axios";
 
 import "./App.css";
 import PokeCard from "./components/PokeCard";
+import useDebounce from "./hooks/useDebounce";
 
 function App() {
   const [pokemons, setPokemons] = useState([]);
@@ -10,39 +11,29 @@ function App() {
   const [moreButtonLoading, setMoreButtonLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+
   const limit = 20;
 
   // 포켓몬 정보 가져오기 => name, url
   const fetchPokeData = async (isFirstLoad) => {
     try {
-      setMoreButtonLoading(true);
-
-      if (isFirstLoad) setOffset(0);
-      const url = `https://pokeapi.co/api/v2/pokemon/?limit=${limit}?&offset=${
-        isFirstLoad ? 0 : offset
-      }`;
+      const offsetValue = isFirstLoad ? 0 : offset + limit;
+      const url = `https://pokeapi.co/api/v2/pokemon/?limit=${limit}?&offset=${offsetValue}`;
       const response = await axios.get(url);
-      if (isFirstLoad) {
-        setPokemons([...response.data.results]);
-        setOffset(limit);
-      } else {
-        setPokemons([...pokemons, ...response.data.results]);
-        setOffset(offset + limit);
-      }
 
-      setMoreButtonLoading(false);
+      setPokemons([...(!isFirstLoad && pokemons), ...response.data.results]);
+      setOffset(offsetValue);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleSearchInput = async (e) => {
-    setSearchTerm(e.target.value);
-
-    if (e.target.value.length > 0) {
+  const handleSearchInput = async (value) => {
+    if (value.length > 0) {
       try {
         const response = await axios.get(
-          `https://pokeapi.co/api/v2/pokemon/${e.target.value}`
+          `https://pokeapi.co/api/v2/pokemon/${value}`
         );
         const searchedPokemonData = {
           url: `https://pokeapi.co/api/v2/pokemon/${response.data.id}`,
@@ -54,14 +45,17 @@ function App() {
         console.error(error);
       }
     } else {
-      setOffset(0);
-      await fetchPokeData(true);
+      fetchPokeData(true);
     }
   };
 
   useEffect(() => {
     fetchPokeData(true);
   }, []);
+
+  useEffect(() => {
+    handleSearchInput(debouncedSearchTerm);
+  }, [debouncedSearchTerm]);
 
   return (
     <article className="pt-6">
@@ -71,7 +65,7 @@ function App() {
             <input
               type="text"
               value={searchTerm}
-              onChange={handleSearchInput}
+              onChange={(e) => setSearchTerm(e.target.value)}
               className="text-xs w-[20.5rem] h-6 px-2 py-1 bg-[hsl(214,13%,47%)] rounded-lg text-gray-300 text-center"
             />
             <button
@@ -104,7 +98,11 @@ function App() {
         ) : (
           <button
             disabled={moreButtonLoading}
-            onClick={() => fetchPokeData(false)}
+            onClick={() => {
+              setMoreButtonLoading(true);
+              fetchPokeData(false);
+              setMoreButtonLoading(false);
+            }}
             className="bg-slate-800 px-6 py-2 my-4 text-base rounded-lg font-bold text-white"
           >
             더 보기
