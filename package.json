@@ -2,7 +2,6 @@
   "name": "pokemon-encyclopedia",
   "private": true,
   "homepage": "https://seung1.github.io/pokemon-encyclopedia",
-  "base": "/pokemon-encyclopedia/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
