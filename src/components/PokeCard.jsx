@@ -38,7 +38,7 @@ const PokeCard = ({ url, name }) => {
     <>
       {pokemon && (
         <a
-          href={`/pokemon/${name}`}
+          href={`/pokemon-encyclopedia/${name}`}
           className={`box-border rounded-lg ${border} w-[8.5rem] h-[8.5rem] z-0 bg-slate-800 justify-between items-center\
           hover:translate-y-[-8px] hover:transition hover:shadow-md\
           active:scale-90`}
