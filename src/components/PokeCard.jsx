@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 import LazyImage from "./LazyImage";
 
@@ -41,7 +41,8 @@ const PokeCard = ({ url, name }) => {
         <a
           href={`/pokemon/${name}`}
           className={`box-border rounded-lg ${border} w-[8.5rem] h-[8.5rem] z-0 bg-slate-800 justify-between items-center\
-          hover:translate-y-[-10px] hover:transition hover:shadow-md`}
+          hover:translate-y-[-8px] hover:transition hover:shadow-md\
+          active:scale-90`}
         >
           <div
             className={`${text} h-[1.5rem] text-xs w-full pt-1 px-2 text-right rounded-t-lg`}

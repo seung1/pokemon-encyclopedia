@@ -1,19 +1,28 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
-import "./App.css";
 import axios from "axios";
+
+import "./App.css";
 import PokeCard from "./components/PokeCard";
 
 function App() {
   const [pokemons, setPokemons] = useState([]);
+  const [offset, setOffset] = useState(0);
+  const [moreButtonLoading, setMoreButtonLoading] = useState(false);
 
-  const url = "https://pokeapi.co/api/v2/pokemon/?limit=108?offset=0";
+  const limit = 20;
 
   // 포켓몬 정보 가져오기 => name, url
   const fetchPokeData = async () => {
     try {
+      const nextOffsetValue = offset + limit;
+
+      setMoreButtonLoading(true);
+      const url = `https://pokeapi.co/api/v2/pokemon/?limit=${limit}?&offset=${offset}`;
       const response = await axios.get(url);
-      setPokemons(response.data.results);
+      setPokemons([...pokemons, ...response.data.results]);
+      setMoreButtonLoading(false);
+
+      setOffset(nextOffsetValue);
     } catch (error) {
       console.error(error);
     }
@@ -41,6 +50,21 @@ function App() {
           )}
         </div>
       </section>
+      <div className="text-center">
+        {moreButtonLoading ? (
+          <div className="flex items-center justify-center my-4">
+            ...loading
+          </div>
+        ) : (
+          <button
+            disabled={moreButtonLoading}
+            onClick={() => fetchPokeData()}
+            className="bg-slate-800 px-6 py-2 my-4 text-base rounded-lg font-bold text-white"
+          >
+            더 보기
+          </button>
+        )}
+      </div>
     </article>
   );
 }
