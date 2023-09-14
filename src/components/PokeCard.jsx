@@ -10,8 +10,7 @@ const PokeCard = ({ url, name }) => {
   const fetchPokeDetailData = async () => {
     try {
       const response = await axios(url);
-      const pokemonData = formatPokemonData(response.data);
-      setPokemon(pokemonData);
+      setPokemon(formatPokemonData(response.data));
     } catch (error) {
       console.error(error);
     }
@@ -27,7 +26,7 @@ const PokeCard = ({ url, name }) => {
 
   useEffect(() => {
     fetchPokeDetailData();
-  }, []);
+  }, [url, name]);
 
   const bg = `bg-${pokemon?.type}`;
   const border = `border-${pokemon?.type}`;
