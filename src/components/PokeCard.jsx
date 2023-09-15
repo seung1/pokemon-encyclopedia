@@ -39,7 +39,7 @@ const PokeCard = ({ url, name }) => {
     <>
       {pokemon && (
         <Link
-          to={`/pokemon/${name}`}
+          to={`/pokemon-encyclopedia/pokemon/${name}`}
           className={`box-border rounded-lg ${border} w-[8.5rem] h-[8.5rem] z-0 bg-slate-800 justify-between items-center\
           hover:translate-y-[-8px] hover:transition hover:shadow-md\
           active:scale-90`}

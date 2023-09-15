@@ -9,8 +9,11 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/pokemon/:id" element={<DetailPage />} />
+        <Route path="/pokemon-encyclopedia/" element={<MainPage />} />
+        <Route
+          path="/pokemon-encyclopedia/pokemon/:id"
+          element={<DetailPage />}
+        />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>
