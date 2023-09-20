@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react";
 
 const BaseStat = ({ valueStat, nameStat, type }) => {
   const ref = useRef(null);
-
   const bg = `bg-${type}`;
 
   useEffect(() => {

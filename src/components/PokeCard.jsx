@@ -7,6 +7,12 @@ import LazyImage from "./LazyImage";
 const PokeCard = ({ url, name }) => {
   const [pokemon, setPokemon] = useState();
 
+  const bg = `bg-${pokemon?.type}`;
+  const border = `border-${pokemon?.type}`;
+  const text = `text-${pokemon?.type}`;
+
+  const img = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon?.id}.png`;
+
   // 세부 정보 가져오기
   const fetchPokeDetailData = async () => {
     try {
@@ -28,12 +34,6 @@ const PokeCard = ({ url, name }) => {
   useEffect(() => {
     fetchPokeDetailData();
   }, [url, name]);
-
-  const bg = `bg-${pokemon?.type}`;
-  const border = `border-${pokemon?.type}`;
-  const text = `text-${pokemon?.type}`;
-
-  const img = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon?.id}.png`;
 
   return (
     <>

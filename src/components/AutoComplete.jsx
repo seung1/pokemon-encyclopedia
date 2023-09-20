@@ -16,7 +16,6 @@ const AutoComplete = ({ allPokemons, setDisplayedPokemons }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     handleSearch(searchTerm);
   };
 
