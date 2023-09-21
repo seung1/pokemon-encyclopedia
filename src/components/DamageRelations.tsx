@@ -1,21 +1,21 @@
 import React, { useEffect } from "react";
 
 const DamageRelations = ({ damages }) => {
-const separateObjectBetweenToAndFrom =(damage)=>{
-    const from filterDamageRelations('_from',damage)
+  // const separateObjectBetweenToAndFrom =(damage)=>{
+  //     const from filterDamageRelations('_from',damage)
 
-    const to = filterDamageRelations ('_to',damage)
-}
+  //     const to = filterDamageRelations ('_to',damage)
+  // }
 
-const filterDamageRelations = (valueFilter,damage )=>{
-Object.entries(damage).filter(([keyName,value])=>
-)}
+  // const filterDamageRelations = (valueFilter,damage )=>{
+  // return Object.entries(damage).filter(([keyName,value])=>keyName.includes(valueFilter)
+  // }
 
-  useEffect(() => {
-    const arrayDamage = damages.map((damage) => {
-      separateObjectBetweenToAndFrom(damage);
-    });
-  }, []);
+  //   useEffect(() => {
+  //     const arrayDamage = damages.map((damage) => {
+  //       separateObjectBetweenToAndFrom(damage);
+  //     });
+  //   }, []);
 
   return <div>DamageRelations</div>;
 };
