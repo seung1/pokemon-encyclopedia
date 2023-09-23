@@ -57,7 +57,7 @@ const DamageRelations = ({ damages }) => {
   };
 
   const filterForUniqueValues = (valueForFiltering, damageValue) => {
-    valueForFiltering.reduce((acc, currentValue) => {
+    return valueForFiltering.reduce((acc, currentValue) => {
       const { url, name } = currentValue;
       const filterACC = acc.filter((a) => a.name !== name);
       return filterACC.length === acc.length
@@ -73,7 +73,7 @@ const DamageRelations = ({ damages }) => {
       no_damage: "0x",
     };
 
-    Object.entries(props).reduce((acc, [keyName, value]) => {
+    return Object.entries(props).reduce((acc, [keyName, value]) => {
       const key = keyName;
       const verifiedValue = filterForUniqueValues(value, duplicateValues[key]);
       return (acc = { [keyName]: verifiedValue, ...acc });
@@ -85,11 +85,11 @@ const DamageRelations = ({ damages }) => {
       separateObjectBetweenToAndFrom(damage)
     );
 
-    if (arrayDamage.length === 2) {
+    if (arrayDamage?.length === 2) {
       const result = joinDamageRelations(arrayDamage);
       setDamagePokemonForm(reduceDuplicateValues(postDamageValue(result.from)));
     } else {
-      const result = postDamageValue(arrayDamage[0]?.from);
+      const result = postDamageValue(arrayDamage[0].from);
       setDamagePokemonForm(result);
     }
   }, []);
@@ -97,39 +97,33 @@ const DamageRelations = ({ damages }) => {
   return (
     <div className="flex gap-2 flex-col">
       {damagePokemonForm ? (
-        <>
-          {Object.entries(damagePokemonForm).map(([keyName, value]) => {
-            const key = keyName;
-            const valuesOfKeyName = {
-              double_damage: "Weak",
-              half_damage: "Resistant",
-              no_damage: "Immune",
-            };
+        Object.entries(damagePokemonForm).map(([keyName, value]) => {
+          const key = keyName;
+          const valuesOfKeyName = {
+            double_damage: "Weak",
+            half_damage: "Resistant",
+            no_damage: "Immune",
+          };
 
-            return (
-              <div key={key}>
-                <h3 className="capitalize font-medium text-sm md:text-base text-slate-500 text-center">
-                  {valuesOfKeyName[key]}
-                </h3>
-                <div className="flex flex-wrap gap-1 justify-center">
-                  {value.length > 0 ? (
-                    value.map(({ name, url, damageValue }) => (
-                      <Type
-                        type={name}
-                        key={url}
-                        damageValue={damageValue}
-                      ></Type>
-                    ))
-                  ) : (
-                    <Type type={"none"} key={"none"} />
-                  )}
-                </div>
+          return (
+            <div key={key}>
+              <h3 className="capitalize font-medium text-sm md:text-base text-slate-500 text-center">
+                {valuesOfKeyName[key]}
+              </h3>
+              <div className="flex flex-wrap gap-1 justify-center">
+                {value?.length > 0 ? (
+                  value.map(({ name, damageValue }, idx) => (
+                    <Type type={name} key={idx} damageValue={damageValue} />
+                  ))
+                ) : (
+                  <Type type={"none"} key={"none"} />
+                )}
               </div>
-            );
-          })}
-        </>
+            </div>
+          );
+        })
       ) : (
-        <div></div>
+        <div>...Loading</div>
       )}
     </div>
   );
