@@ -10,14 +10,13 @@ import Balance from "../../assets/Balance";
 import Vector from "../../assets/Vector";
 import Type from "../../components/Type";
 import BaseStat from "../../components/BaseStat";
-import DamageRelations from "../../components/DamageRelations";
 import DamageModal from "../../components/DamageModal";
 
 const DetailPage = () => {
   const params = useParams();
 
   const [pokemon, setPokemon] = useState();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const pokemonId = params.id;
@@ -60,13 +59,38 @@ const DetailPage = () => {
     { name: "Speed", baseStat: statSPD.base_stat },
   ];
 
-  const fetchPokemonData = async () => {
-    const url = `${baseUrl}${pokemonId}`;
+  const formatPokemonSprites = (sprites) => {
+    const newSprites = { ...sprites };
+    Object.keys(newSprites).forEach((key) => {
+      if (typeof newSprites[key] !== "string") delete newSprites[key];
+    });
+    return Object.values(newSprites);
+  };
+
+  const filterAndFormatDescription = (flavorText) => {
+    return flavorText
+      ?.filter((text) => text.language.name === "ko")
+      .map((text) => text.flavor_text.replace(/\r|\n|\f/g, ""));
+  };
+
+  const getPokemonDescription = async (id) => {
+    const url = `https://pokeapi.co/api/v2/pokemon-species/${id}/`;
+    const { data: pokemonSpecies } = await axios.get(url);
+
+    const descriptions = filterAndFormatDescription(
+      pokemonSpecies.flavor_text_entries
+    );
+
+    return descriptions[Math.floor(Math.random() * descriptions.length)];
+  };
+
+  const fetchPokemonData = async (id) => {
+    const url = `${baseUrl}${id}`;
     try {
       const { data: pokemonData } = await axios.get(url);
 
       if (pokemonData) {
-        const { name, id, types, weight, height, stats, abilities } =
+        const { name, id, types, weight, height, stats, abilities, sprites } =
           pokemonData;
 
         // 안에 있는 비동기 작업이 모두 완료된 후에 리턴하기 위해 Promise.all() 사용
@@ -90,6 +114,8 @@ const DetailPage = () => {
           stats: formatPokemonStats(stats),
           DamageRelations,
           types: types.map((type) => type.type.name),
+          sprites: formatPokemonSprites(sprites),
+          description: await getPokemonDescription(id),
         };
 
         setPokemon(formattedPokemonData);
@@ -101,7 +127,8 @@ const DetailPage = () => {
   };
 
   useEffect(() => {
-    fetchPokemonData();
+    setIsLoading(true);
+    fetchPokemonData(pokemonId);
   }, [pokemonId]);
 
   // 로딩중
@@ -222,6 +249,17 @@ const DetailPage = () => {
                 ))}
               </tbody>
             </table>
+          </div>
+
+          <h2 className={`text-base font-semibold ${text}`}>설명</h2>
+          <p className="text-md leading-6 font-sans text-zinc-200 max-w-[30rem] text-center">
+            {pokemon.description}
+          </p>
+
+          <div className="flex my-8 flex-wrap justify-center">
+            {pokemon.sprites.map((url, idx) => (
+              <img key={idx} src={url} alt="sprites" />
+            ))}
           </div>
         </section>
       </div>
