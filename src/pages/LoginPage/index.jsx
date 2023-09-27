@@ -11,11 +11,7 @@ const LoginPage = () => {
           <p className="text-xs mt-4 text-[#002D74]">로그인해 주세요.</p>
         </div>
         <div className="md:block hidden w-1/2">
-          <img
-            alt="login"
-            className="rounded-2xl"
-            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png`}
-          />
+          <img alt="login" className="rounded-2xl" src={getImageUrl(7)} />
         </div>
       </div>
     </section>

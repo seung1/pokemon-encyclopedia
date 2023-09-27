@@ -14,7 +14,7 @@ const NavWrapper = styled.nav`
   letter-spacing: 16px;
   z-index: 100;
 
-  background-color: ${(props) => props.$show};
+  background-color: ${(props) => (props.$show ? "#090b13" : "red")};
 `;
 
 const Logo = styled.a`
@@ -38,6 +38,7 @@ const NavBar = () => {
   const listener = () => {
     if (window.screenY > 50) setShow(true);
     else setShow(false);
+    console.log(window.scrollY);
   };
 
   useEffect(() => {
@@ -46,15 +47,15 @@ const NavBar = () => {
     return () => {
       window.removeEventListener("scroll", listener);
     };
-  }, []);
+  }, [window]);
 
   return (
-    <NavWrapper $show={show ? "#090b13" : "transparent"}>
+    <NavWrapper $show={show}>
       <Logo>
         <Image
           alt="Poke logo"
-          src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png`}
-          onClick={() => (window.location.href = "/")}
+          src={getImageUrl(25)}
+          onClick={() => (window.location.href = "/pokemon-encyclopedia/")}
         />
       </Logo>
     </NavWrapper>

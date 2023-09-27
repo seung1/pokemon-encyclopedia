@@ -148,7 +148,7 @@ const DetailPage = () => {
   // 상세페이지
   const bg = `bg-${pokemon?.types?.[0]}`;
   const text = `text-${pokemon?.types?.[0]}`;
-  const img = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon?.id}.png`;
+  const img = getImageUrl(pokemon?.id);
 
   return (
     <article className="flex items-center gap-1 flex-col w-full">

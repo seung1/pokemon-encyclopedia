@@ -11,7 +11,7 @@ const PokeCard = ({ url, name }) => {
   const border = `border-${pokemon?.type}`;
   const text = `text-${pokemon?.type}`;
 
-  const img = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon?.id}.png`;
+  const img = getImageUrl(pokemon?.id);
 
   // 세부 정보 가져오기
   const fetchPokeDetailData = async () => {
