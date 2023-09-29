@@ -1,5 +1,7 @@
 import React from "react";
 
+import { getImageUrl } from "../../utils/url";
+
 const LoginPage = () => {
   return (
     <section className="bg-gray-50 min-h-[90vh] flex items-center justify-center">

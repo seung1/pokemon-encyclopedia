@@ -11,6 +11,7 @@ import Vector from "../../assets/Vector";
 import Type from "../../components/Type";
 import BaseStat from "../../components/BaseStat";
 import DamageModal from "../../components/DamageModal";
+import { getImageUrl } from "../../utils/url";
 
 const DetailPage = () => {
   const params = useParams();

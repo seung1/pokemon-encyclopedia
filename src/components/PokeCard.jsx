@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+import { getImageUrl } from "../utils/url";
 import LazyImage from "./LazyImage";
 
 const PokeCard = ({ url, name }) => {

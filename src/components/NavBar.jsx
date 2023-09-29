@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { getImageUrl } from "../utils/url";
 
 const NavWrapper = styled.nav`
   position: fixed;
