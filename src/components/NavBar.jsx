@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+
 import { getImageUrl } from "../utils/url";
+import app from "../../firebase";
 
 const NavWrapper = styled.nav`
   position: fixed;
@@ -15,7 +19,7 @@ const NavWrapper = styled.nav`
   letter-spacing: 16px;
   z-index: 100;
 
-  background-color: ${(props) => (props.$show ? "#090b13" : "red")};
+  background-color: ${(props) => (props.$show ? "#090b13" : "transparent")};
 `;
 
 const Logo = styled.a`
@@ -33,13 +37,40 @@ const Image = styled.img`
   width: 100%;
 `;
 
+const Login = styled.a`
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 8px 16px;
+  text-transform: uppercase;
+  letter-spacing: 1.55px;
+  border: 1px solid #f9f9f9;
+  border-radius: 4px;
+  transition: all 0.2s ease 0s;
+  cursor: pointer;
+  color: white;
+
+  &:hover {
+    background-color: #f9f9f9;
+    color: #000;
+    berder-color: transparent;
+  }
+`;
+
 const NavBar = () => {
+  const { pathname } = useLocation();
   const [show, setShow] = useState(false);
 
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+
+  const handleAuth = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => console.log(result))
+      .catch((error) => console.error(error));
+  };
+
   const listener = () => {
-    if (window.screenY > 50) setShow(true);
+    if (window.scrollY > 50) setShow(true);
     else setShow(false);
-    console.log(window.scrollY);
   };
 
   useEffect(() => {
@@ -59,6 +90,10 @@ const NavBar = () => {
           onClick={() => (window.location.href = "/pokemon-encyclopedia/")}
         />
       </Logo>
+
+      {pathname === "/pokemon-encyclopedia/login" ? (
+        <Login onClick={handleAuth}>로그인</Login>
+      ) : null}
     </NavWrapper>
   );
 };
