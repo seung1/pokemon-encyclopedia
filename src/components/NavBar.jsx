@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  getAuth,
+  onAuthStateChanged,
+  signInWithPopup,
+} from "firebase/auth";
 
 import { getImageUrl } from "../utils/url";
 import app from "../../firebase";
@@ -58,9 +63,24 @@ const Login = styled.a`
 const NavBar = () => {
   const { pathname } = useLocation();
   const [show, setShow] = useState(false);
+  const navigate = useNavigate();
 
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
+
+  useEffect(() => {
+    const unSubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        navigate("/pokemon-encyclopedia/login");
+      } else if (user & (pathname === "/pokemon-encyclopedia/login")) {
+        navigate("/pokemon-encyclopedia/");
+      }
+    });
+    // 유저 스테이트가 체인지가 되어야 호출된다 -> 링크를 통한 이동과 클릭해서 이동하는건 다른 동작
+    return () => {
+      unSubscribe();
+    };
+  }, [pathname]);
 
   const handleAuth = () => {
     signInWithPopup(auth, provider)
