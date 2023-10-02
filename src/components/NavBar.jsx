@@ -6,6 +6,7 @@ import {
   getAuth,
   onAuthStateChanged,
   signInWithPopup,
+  signOut,
 } from "firebase/auth";
 
 import { getImageUrl } from "../utils/url";
@@ -60,12 +61,57 @@ const Login = styled.a`
   }
 `;
 
+const Dropdown = styled.div`
+  position: absolute;
+  top: 48px;
+  right: 0px;
+  background: rgb(19, 19, 19);
+  border: 1px solid rgba(151, 151, 151, 0.34);
+  border-radius: 4px;
+  box-shadow: rgb(0 0 0 / 50%) 0px 0px 18px 0px;
+  padding: 10px;
+  font-size: 14px;
+  letter-spacing: 3px;
+  width: 100px;
+  opacity: 0;
+  color: white;
+`;
+
+const SignOut = styled.div`
+  position: relative;
+  height: 48px;
+  width: 48px;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    ${Dropdown} {
+      opacity: 1;
+      transition-duration: 1s;
+    }
+  }
+`;
+
+const UserImg = styled.img`
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+`;
+
+const initUserData = localStorage.getItem("userData")
+  ? JSON.parse(localStorage.getItem("userData"))
+  : {};
+
 const NavBar = () => {
   const { pathname } = useLocation();
-  const [show, setShow] = useState(false);
   const navigate = useNavigate();
-
   const auth = getAuth(app);
+
+  const [show, setShow] = useState(false);
+  const [userData, setUserData] = useState(initUserData);
+
   const provider = new GoogleAuthProvider();
 
   useEffect(() => {
@@ -84,8 +130,29 @@ const NavBar = () => {
 
   const handleAuth = () => {
     signInWithPopup(auth, provider)
-      .then((result) => console.log(result))
+      .then((result) => {
+        const formatUserData = {
+          name: result.user.displayName,
+          email: result.user.email,
+          photoURL: result.user.photoURL,
+        };
+        setUserData(formatUserData);
+        console.log(result.user);
+        localStorage.setItem("userData", JSON.stringify(formatUserData));
+        navigate("/pokemon-encyclopedia/");
+      })
       .catch((error) => console.error(error));
+  };
+
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        setUserData({});
+        navigate("/pokemon-encyclopedia/login");
+      })
+      .catch((err) => {
+        alert(err);
+      });
   };
 
   const listener = () => {
@@ -113,7 +180,14 @@ const NavBar = () => {
 
       {pathname === "/pokemon-encyclopedia/login" ? (
         <Login onClick={handleAuth}>로그인</Login>
-      ) : null}
+      ) : (
+        <SignOut>
+          <UserImg src={userData.photoURL} alt="userPhoto" />
+          <Dropdown>
+            <span onClick={handleLogout}>Sign out</span>
+          </Dropdown>
+        </SignOut>
+      )}
     </NavWrapper>
   );
 };
